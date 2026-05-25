@@ -2,7 +2,6 @@
 -- Provjera vremena i rada Cassandra instance
 SELECT now() FROM system.local;
 
-
 -- Kreiranje keyspace-a zadatak 2
 CREATE KEYSPACE IF NOT EXISTS vjezba
 WITH replication = {
@@ -11,6 +10,7 @@ WITH replication = {
 };
 
 USE vjezba;
+-- kreiranje tabele narudzbe
 
 CREATE TABLE narudzbe (
   korisnik_id UUID,
@@ -22,6 +22,7 @@ CREATE TABLE narudzbe (
   PRIMARY KEY (korisnik_id, created_at)
 ) WITH CLUSTERING ORDER BY (created_at DESC);
 
+-- lreiranje tabele proizvodi
 CREATE TABLE proizvodi (
   id UUID PRIMARY KEY,
   naziv TEXT,
@@ -29,6 +30,8 @@ CREATE TABLE proizvodi (
   kategorija TEXT,
   dostupnost BOOLEAN
 );
+
+-- kreiranje tabele recenzije
 
 CREATE TABLE recenzije (
   proizvod_id UUID,
@@ -47,6 +50,7 @@ CREATE TABLE pregledi_proizvoda (
   naziv_proizvoda TEXT,
   PRIMARY KEY (korisnik_id, datum)
 );
+
 --Zadatak3 
 --unos proizvoda
 
@@ -68,6 +72,7 @@ VALUES (uuid(), 'Monitor 27"', 499.00, 'elektronika', true);
 INSERT INTO proizvodi (id, naziv, cijena, kategorija, dostupnost)
 VALUES (uuid(), 'Radni stol', 279.00, 'namještaj', true);
 
+-- pregled svih proizvoda
 SELECT * FROM proizvodi;
 
 --korisnik A
@@ -83,7 +88,7 @@ INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad
 VALUES (11111111-1111-1111-1111-111111111111,
         toTimestamp(now()), uuid(), 89.99, 'isporuceno', 'Zagreb');
 
---korisnik B 
+-- korisnik B 
 INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
 VALUES (22222222-2222-2222-2222-222222222222,
         toTimestamp(now()), uuid(), 499.00, 'isporuceno', 'Split');
