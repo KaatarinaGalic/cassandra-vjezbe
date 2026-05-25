@@ -31,3 +31,11 @@ Materialized View omogućuje kreiranje alternativnog primarnog ključa nad posto
 ## Secondary Index vs Materialized View
 
 Secondary Index se koristi kada želimo filtrirati po stupcu koji nije partition key bez mijenjanja modela tablice, ali može biti spor jer kontaktira više čvorova. Materialized View kreira novu fizičku tablicu s drugačijim primary key-em i omogućuje brze upite, ali povećava write overhead jer se podaci moraju održavati u dvije strukture.
+
+# Završni zadatak
+## Zavrsni zadatak - Materialized view
+Materialized view nije moguće kreirati jer je u Cassandri onemogucen (disabled u cassandra.yaml). 
+Zbog toga se za filtriranje po kategoriji koristi Secondary Index ili denormalizacija podataka u zasebnu tablicu.
+
+## Kada je Cassandra bolji izbor od PostgreSQL-a za platformu online tecajeva?
+Cassandra bi se koristila umjesto PostgreSQL-a u slučaju kada sustav mora podržati vrlo velik broj korisnika i ogromnu količinu paralelnih upisa, primjerice u platformi online tečajeva s globalnom bazom korisnika. Posebno je pogodna kada postoji potreba za visokim write throughputom, gdje se stalno bilježe upisi na tečajeve, napredak studenata i aktivnosti u realnom vremenu. Takodjer, Cassandra je bolja opcija kada je sustav distribuiran na više lokacija jer omogućuje horizontalno skaliranje bez uskog grla u jednoj bazi. U ovakvom scenariju važna je i visoka dostupnost podataka, čak i u slučaju ispada pojedinih čvorova. TTL funkcionalnost je posebno korisna za trial ili probne pristupe tečajevima jer omogućuje automatsko brisanje podataka nakon određenog vremena bez dodatne logike u aplikaciji. U relacijskim bazama kao što je PostgreSQL takvi zahtjevi bi bili teže izvedivi zbog potrebe za dodatnim schedulerima, triggerima ili batch jobovima. Cassandra žrtvuje kompleksne relacije i JOIN operacije u korist brzine pisanja i skalabilnosti. Zbog toga je prikladna za sustave gdje je obrazac pristupa poznat unaprijed i optimiziran po primary key-u.
