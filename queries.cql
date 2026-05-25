@@ -170,3 +170,34 @@ WHERE korisnik_id = 33333333-3333-3333-3333-333333333333
 --Provjera
 SELECT * FROM narudzbe
 WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;
+
+--6 Zadatak
+
+CREATE INDEX idx_dostupnost ON proizvodi (dostupnost);
+--Provjera
+SELECT naziv, cijena, dostupnost
+FROM proizvodi
+WHERE dostupnost = true;
+
+--Materialized View (po statusu narudžbe)
+
+CREATE MATERIALIZED VIEW narudzbe_po_statusu AS
+SELECT *
+FROM narudzbe
+WHERE status IS NOT NULL
+  AND korisnik_id IS NOT NULL
+  AND created_at IS NOT NULL
+PRIMARY KEY (status, korisnik_id, created_at)
+WITH CLUSTERING ORDER BY (korisnik_id ASC, created_at DESC);
+
+
+--SUM
+SELECT SUM(ukupno) AS ukupna_potrosnja
+FROM narudzbe
+WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;
+
+--AVG
+SELECT AVG(ukupno) AS prosjecna_narudzba
+FROM narudzbe
+WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;
+

@@ -22,3 +22,12 @@ Partition key određuje na kojem čvoru se podaci fizički spremaju i koristi se
 # Zadatak 5
 ## Tombstone u Cassandri
 Tombstone je marker koji Cassandra ostavlja kada se izvrši DELETE umjesto da odmah fizički briše podatak. Razlog je što Cassandra radi distribuirano i ne može odmah sinkronizirano ukloniti podatke sa svih čvorova. Podaci se trajno brišu tek tijekom compaction procesa kada se spajaju SSTable datoteke i uklanjaju zastarjeli zapisi.
+
+# Zadatak 6
+## Materialized View
+
+Materialized View omogućuje kreiranje alternativnog primarnog ključa nad postojećom tablicom i automatsko održavanje podataka. U ovom slučaju MV je trebao omogućiti query po statusu narudžbe bez ALLOW FILTERING. U mom okruženju Materialized Views su onemogućeni u Cassandra konfiguraciji (docker setup), pa se ne mogu izvršiti, ali konceptualno služe za optimizaciju čitanja uz povećan write overhead.
+
+## Secondary Index vs Materialized View
+
+Secondary Index se koristi kada želimo filtrirati po stupcu koji nije partition key bez mijenjanja modela tablice, ali može biti spor jer kontaktira više čvorova. Materialized View kreira novu fizičku tablicu s drugačijim primary key-em i omogućuje brze upite, ali povećava write overhead jer se podaci moraju održavati u dvije strukture.
