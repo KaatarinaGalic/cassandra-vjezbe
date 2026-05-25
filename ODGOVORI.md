@@ -1,3 +1,9 @@
-## Zadatak 1.
+# Zadatak 1.
 Cassandra koristi port 9042 za CQL komunikaciju. Taj port koriste cqlsh i aplikacije koje se spajaju na bazu podataka.
 Cassandra nema ugrađeno web sučelje jer je fokusirana na distribuiranu obradu podataka i rad kroz CQL klijente i drivere. Administracija se uglavnom radi kroz terminal i alate za monitoring.
+
+# Zadatak 2
+## Zašto je partition key vazan u Cassandri
+Partition key određuje na kojem će se čvoru podaci spremiti. Cassandra koristi hash partition key-a za raspodjelu podataka kroz klaster i zato je njegov odabir ključan za performanse i ravnomjerno opterećenje sustava.
+## Hot partition problem
+Ako veliki broj zapisa koristi isti partition key, svi podaci završavaju na istom čvoru. To uzrokuje preopterećenje jednog dijela klastera, sporije upite i problem poznat kao hot partition.
