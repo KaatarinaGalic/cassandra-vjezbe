@@ -145,3 +145,28 @@ WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;
 --nakon 35s
 SELECT * FROM narudzbe
 WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;
+
+--Zadatak 5
+--a UPDATE status narudžbe
+UPDATE narudzbe
+SET status = 'isporuceno'
+WHERE korisnik_id = 33333333-3333-3333-3333-333333333333
+  AND created_at = '2026-05-25 17:55:39.478000+0000';
+
+--Provjera
+SELECT * FROM narudzbe
+WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;
+
+--b LWT
+INSERT INTO proizvodi (id, naziv, cijena, kategorija, dostupnost)
+VALUES (be3bde2c-b965-4609-8307-134e79f71343, 'Novi proizvod', 49.99, 'ostalo', true)
+IF NOT EXISTS;
+
+--DELETE narudžbe
+DELETE FROM narudzbe
+WHERE korisnik_id = 33333333-3333-3333-3333-333333333333
+  AND created_at = '2026-05-25 17:55:38.150000+0000';
+
+--Provjera
+SELECT * FROM narudzbe
+WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;

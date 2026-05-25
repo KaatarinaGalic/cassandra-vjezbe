@@ -18,3 +18,7 @@ ALLOW FILTERING u Cassandri je problematičan jer omogućuje skeniranje svih par
 
 ## Kratko objasniti razliku između partition key i clustering column u kontekstu CQL WHERE upita 
 Partition key određuje na kojem čvoru se podaci fizički spremaju i koristi se za brzo lociranje podataka. Clustering column određuje redoslijed podataka unutar iste particije. U ovom zadatku korisnik_id je partition key, a created_at clustering column pa se narudžbe jednog korisnika čuvaju zajedno i sortiraju po vremenu.
+
+# Zadatak 5
+## Tombstone u Cassandri
+Tombstone je marker koji Cassandra ostavlja kada se izvrši DELETE umjesto da odmah fizički briše podatak. Razlog je što Cassandra radi distribuirano i ne može odmah sinkronizirano ukloniti podatke sa svih čvorova. Podaci se trajno brišu tek tijekom compaction procesa kada se spajaju SSTable datoteke i uklanjaju zastarjeli zapisi.
