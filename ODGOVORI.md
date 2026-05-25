@@ -7,3 +7,14 @@ Cassandra nema ugrađeno web sučelje jer je fokusirana na distribuiranu obradu 
 Partition key određuje na kojem će se čvoru podaci spremiti. Cassandra koristi hash partition key-a za raspodjelu podataka kroz klaster i zato je njegov odabir ključan za performanse i ravnomjerno opterećenje sustava.
 ## Hot partition problem
 Ako veliki broj zapisa koristi isti partition key, svi podaci završavaju na istom čvoru. To uzrokuje preopterećenje jednog dijela klastera, sporije upite i problem poznat kao hot partition.
+
+# Zadatak 3
+Cassandra INSERT ima upsert semantiku. Kada se unese red s istim primary key-em (korisnik_id + created_at), novi zapis prepisuje stari. U testu je vrijednost ukupno promijenjena u novu vrijednost, što potvrđuje da Cassandra ne radi update nego overwrite na razini ključa.
+
+# Zadatak 4
+## Zašto je ALLOW FILTERING problematican:
+ALLOW FILTERING u Cassandri je problematičan jer omogućuje skeniranje svih particija u bazi umjesto ciljanja jedne. To znači da Cassandra mora pregledati veliki broj čvorova, što značajno smanjuje performanse. U produkciji to može uzrokovati veliko opterećenje klastera i spore upite.
+
+
+## Kratko objasniti razliku između partition key i clustering column u kontekstu CQL WHERE upita 
+Partition key određuje na kojem čvoru se podaci fizički spremaju i koristi se za brzo lociranje podataka. Clustering column određuje redoslijed podataka unutar iste particije. U ovom zadatku korisnik_id je partition key, a created_at clustering column pa se narudžbe jednog korisnika čuvaju zajedno i sortiraju po vremenu.

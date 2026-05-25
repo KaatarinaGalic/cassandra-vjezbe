@@ -47,3 +47,101 @@ CREATE TABLE pregledi_proizvoda (
   naziv_proizvoda TEXT,
   PRIMARY KEY (korisnik_id, datum)
 );
+--Zadatak3 
+--unos proizvoda
+
+INSERT INTO proizvodi (id, naziv, cijena, kategorija, dostupnost)
+VALUES (uuid(), 'Laptop Pro 15', 1299.99, 'elektronika', true);
+
+INSERT INTO proizvodi (id, naziv, cijena, kategorija, dostupnost)
+VALUES (uuid(), 'Bežične slušalice', 149.99, 'elektronika', true);
+
+INSERT INTO proizvodi (id, naziv, cijena, kategorija, dostupnost)
+VALUES (uuid(), 'Ergonomska stolica', 349.00, 'namještaj', true);
+
+INSERT INTO proizvodi (id, naziv, cijena, kategorija, dostupnost)
+VALUES (uuid(), 'Mehanička tipkovnica', 89.99, 'elektronika', false);
+
+INSERT INTO proizvodi (id, naziv, cijena, kategorija, dostupnost)
+VALUES (uuid(), 'Monitor 27"', 499.00, 'elektronika', true);
+
+INSERT INTO proizvodi (id, naziv, cijena, kategorija, dostupnost)
+VALUES (uuid(), 'Radni stol', 279.00, 'namještaj', true);
+
+SELECT * FROM proizvodi;
+
+--korisnik A
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (11111111-1111-1111-1111-111111111111,
+        toTimestamp(now()), uuid(), 1449.98, 'isporuceno', 'Zagreb');
+
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (11111111-1111-1111-1111-111111111111,
+        toTimestamp(now()), uuid(), 349.00, 'u_obradi', 'Zagreb');
+
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (11111111-1111-1111-1111-111111111111,
+        toTimestamp(now()), uuid(), 89.99, 'isporuceno', 'Zagreb');
+
+--korisnik B 
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (22222222-2222-2222-2222-222222222222,
+        toTimestamp(now()), uuid(), 499.00, 'isporuceno', 'Split');
+
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (22222222-2222-2222-2222-222222222222,
+        toTimestamp(now()), uuid(), 279.00, 'otkazano', 'Split');
+
+-- treci korisnik
+
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (33333333-3333-3333-3333-333333333333,
+        toTimestamp(now()), uuid(), 120.00, 'isporuceno', 'Mostar');
+
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (33333333-3333-3333-3333-333333333333,
+        toTimestamp(now()), uuid(), 75.50, 'u_obradi', 'Sarajevo');
+
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (33333333-3333-3333-3333-333333333333,
+        toTimestamp(now()), uuid(), 220.00, 'isporuceno', 'Mostar');
+
+--UPSERT semantika
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (
+33333333-3333-3333-3333-333333333333,
+toTimestamp(now()),
+uuid(),
+9999.99,
+'isporuceno',
+'Mostar'
+); 
+
+--Provjera
+SELECT * FROM narudzbe;
+
+
+--Zadatak 4 
+-- a. pronaći sve narudžbe trećeg korisnika 
+SELECT * FROM narudzbe
+WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;
+-- b. pronaći sve narudžbe sa statusom 'isporuceno' koristeći ALLOW FILTERING 
+SELECT * FROM narudzbe
+WHERE status = 'isporuceno'
+ALLOW FILTERING;
+
+-- c testirati TTL: umetnuti narudžbu s TTL=30 sekundi, odmah provjeriti TTL(status), pričekati 35 sekundi i potvrditi da zapis ne postoji
+INSERT INTO narudzbe (korisnik_id, created_at, narudzba_id, ukupno, status, grad)
+VALUES (33333333-3333-3333-3333-333333333333,
+        toTimestamp(now()), uuid(),
+        55.55, 'test', 'Mostar')
+USING TTL 30;
+
+--Provjera
+SELECT TTL(status), status, grad
+FROM narudzbe
+WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;
+
+--nakon 35s
+SELECT * FROM narudzbe
+WHERE korisnik_id = 33333333-3333-3333-3333-333333333333;
